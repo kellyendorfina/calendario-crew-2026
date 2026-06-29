@@ -21,9 +21,11 @@
     border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600}
   .dot{width:12px;height:12px;border-radius:4px;flex:0 0 auto}
   .legend-note{font-size:12px;color:var(--muted);margin-top:6px}
-  .topbar{margin-bottom:10px}
-  .cta-link{font-size:12.5px;color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line);padding-bottom:1px;transition:color .15s}
-  .cta-link:hover{color:var(--comunidade);border-bottom-color:var(--comunidade)}
+  .topbar{margin-bottom:14px}
+  .cta-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.01em;
+    color:#fff;text-decoration:none;background:var(--comunidade);border:1.5px solid var(--comunidade);
+    border-radius:999px;padding:9px 18px;box-shadow:0 2px 8px rgba(124,58,237,.25);transition:all .15s}
+  .cta-link:hover{background:#6b2fd4;box-shadow:0 4px 14px rgba(124,58,237,.35);transform:translateY(-1px)}
   header.centered{text-align:center}
   header.centered h1{font-size:32px}
   header.centered .legend{justify-content:center}
@@ -45,13 +47,19 @@
   .months{display:flex;flex-direction:column;gap:30px}
   .month h3{font-size:19px;font-weight:800;margin-bottom:12px;text-transform:capitalize;display:flex;align-items:center;gap:10px}
   .month h3::after{content:'';flex:1;height:1px;background:var(--line)}
-  table.cal{width:100%;border-collapse:separate;border-spacing:7px;table-layout:fixed}
-  table.cal th{font-size:12px;color:var(--muted);font-weight:700;padding:4px 0 6px;text-transform:uppercase;letter-spacing:.06em}
-  table.cal td{vertical-align:top;min-height:110px;height:auto;border-radius:11px;background:#fbfbfd;
-    border:1px solid #eef0f3;padding:8px 9px;position:relative}
-  td.empty{background:transparent;border:none}
-  td.has{background:#fff}
-  .dnum{font-size:16px;font-weight:800;color:var(--ink)}
+  /* grade do calendário em blocos de semana */
+  .cal2{margin-top:2px}
+  .cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:5px}
+  .cal-head span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.09em;padding-left:3px}
+  .week{border:1px solid #e1e3e9;border-radius:12px;padding:6px 6px 7px;background:#fafbfc;margin-bottom:9px}
+  .wk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .cell{min-height:104px;border-radius:9px;background:#fff;border:1px solid #ebecf0;padding:7px 8px;position:relative}
+  .cell.wknd{background:#f4f5f7}
+  .cell.empty{background:transparent;border:none;min-height:0}
+  .cell.has{background:#fff;border-color:#e2e4ea}
+  .dnum{display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:25px;
+    font-size:14px;font-weight:800;color:var(--ink)}
+  .cell.has .dnum{background:#eef0f4;border-radius:7px;padding:0 6px}
 
   /* insights de conteúdo por mês */
   .insights{margin-top:18px;border-top:2px dashed var(--line);padding-top:15px}
@@ -62,33 +70,29 @@
   .ins .it{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.25}
   .ins .ix{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4}
 
-  /* linha "Semana N" atravessando a semana */
-  tr.banner-row > td{padding:0;background:transparent;border:none}
-  .wbar{display:flex;flex-direction:column;gap:4px;padding:3px 0 0}
-  .wb{display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:800;color:#fff;
-    padding:5px 13px;border-radius:8px;letter-spacing:.01em}
-  .wb::before{content:'';width:16px;height:2px;background:rgba(255,255,255,.85);border-radius:2px}
+  /* faixa "Semana N" — dentro do retângulo da semana, abaixo dos dias */
+  .wk-strip{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+  .wb{display:flex;align-items:center;gap:8px;font-size:10.5px;font-weight:800;color:#fff;
+    padding:3px 11px;border-radius:6px;letter-spacing:.02em}
+  .wb::before{content:'';width:13px;height:2px;background:rgba(255,255,255,.8);border-radius:2px}
   .wb small{font-weight:700;opacity:.92}
   .wb.tent{background:transparent;border:1.7px dashed currentColor}
   .wb.tent::before{background:currentColor;opacity:.6}
 
   /* evento dentro do dia: nome em cima, tags lado a lado */
-  .evt{margin-top:7px}
-  .evt-name{font-size:11.5px;font-weight:800;color:var(--ink);line-height:1.2}
-  .evt-name em{font-style:normal;font-weight:700;color:var(--projeto);font-size:9.5px}
-  .evt-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
-  .tagchip{font-size:8.5px;font-weight:800;padding:2px 6px;border-radius:6px;color:#fff;line-height:1.3;white-space:nowrap}
-  .tagchip.t-emcasa{background:var(--emcasa)}
-  .tagchip.t-academia{background:var(--academia)}
-  .tagchip.t-projeto{background:var(--projeto)}
-  .tagchip.t-comunidade{background:var(--comunidade)}
-  .tagchip.t-vitalicio{background:var(--vitalicio)}
-  .tagchip.tent{background:transparent!important}
-  .tagchip.t-emcasa.tent{color:var(--emcasa);border:1.5px dashed var(--emcasa)}
-  .tagchip.t-academia.tent{color:var(--academia);border:1.5px dashed var(--academia)}
-  .tagchip.t-projeto.tent{color:var(--projeto);border:1.5px dashed var(--projeto)}
-  .tagchip.t-comunidade.tent{color:var(--comunidade);border:1.5px dashed var(--comunidade)}
-  .tagchip.t-vitalicio.tent{color:var(--vitalicio);border:1.5px dashed var(--vitalicio)}
+  /* post-it: nome + tags agrupados como um único bloco */
+  .evt{margin-top:5px;border-left:3px solid var(--line);border-radius:7px;padding:4px 7px 5px;background:#f6f6f8}
+  .evt-name{font-size:11px;font-weight:800;color:var(--ink);line-height:1.25}
+  .evt-name em{font-style:normal;font-weight:700;color:var(--muted);font-size:9px}
+  .evt-tags{display:flex;flex-wrap:wrap;gap:2px 9px;margin-top:3px}
+  .evt-tag{display:inline-flex;align-items:center;gap:4px;font-size:8.5px;font-weight:700;color:#5b5b67;letter-spacing:.01em}
+  .evt-tag .d{width:7px;height:7px;border-radius:2px;flex:0 0 auto}
+  .evt.p-comunidade{background:#f5f1fd;border-left-color:var(--comunidade)}
+  .evt.p-emcasa{background:#ecf7f1;border-left-color:var(--emcasa)}
+  .evt.p-academia{background:#eef0f3;border-left-color:var(--academia)}
+  .evt.p-projeto{background:#fdf4ea;border-left-color:var(--projeto)}
+  .evt.p-vitalicio{background:#fceef4;border-left-color:var(--vitalicio)}
+  .evt.tent{border-left-style:dashed}
   .badge{display:inline-block;margin-top:6px;font-size:11px;font-weight:800;color:var(--emcasa)}
   .b-start{position:absolute;top:8px;right:9px;font-size:9px;font-weight:800;color:var(--projeto);letter-spacing:.03em}
   .b-end{position:absolute;top:8px;right:9px;font-size:9px;font-weight:800;letter-spacing:.03em}
@@ -189,7 +193,7 @@ const EVENTS=[
   {name:'Início Ciclo 8', tags:['academia'], kind:'point', start:'2026-10-05', end:'2026-10-05', startMark:true},
   {name:'Início Ciclo 9', tags:['academia'], kind:'point', start:'2026-11-16', end:'2026-11-16', startMark:true},
   {name:'Início Ciclo 10', tags:['academia'], kind:'point', start:'2026-12-28', end:'2026-12-28', startMark:true},
-  {name:'Comunidade Temática', tags:['comunidade'], kind:'range', start:'2026-07-20', end:'2026-07-26'},
+  {name:'Dia do Amigo - a definir', tags:['comunidade'], kind:'range', start:'2026-07-20', end:'2026-07-26'},
   {name:'Mês das Crianças (a definir)', tags:['comunidade'], kind:'range', start:'2026-10-12', end:'2026-10-25'},
   {name:'Verão que Lute', tags:['projeto'], kind:'point', start:'2026-11-09', end:'2026-11-09'},
   {name:'Verão que Lute', tags:['projeto'], kind:'range', start:'2026-11-29', end:'2026-12-19'},
@@ -222,7 +226,7 @@ const addB=(mon,label,col,sub,tent)=>{(BANNERS[mon]=BANNERS[mon]||[]).push({labe
 function monthMondays(y,m){let r=[];const dim=new Date(Date.UTC(y,m+1,0)).getUTCDate();for(let d=1;d<=dim;d++){const s=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(mk(s).getUTCDay()===1)r.push(s);}return r;}
 ['2026-06-15','2026-06-22','2026-06-29','2026-07-06','2026-07-13'].forEach((m,i)=>addB(m,`Semana ${i+1}`,'var(--comunidade)','Copa Crew'));
 [[6,'2026-07-13'],[7,'2026-08-24'],[8,'2026-10-05'],[9,'2026-11-16'],[10,'2026-12-28']].forEach(([n,st])=>{for(let w=0;w<6;w++)addB(addDays(st,w*7),`Sem ${w+1}`,'var(--academia)',`Ciclo ${n}`);});
-addB('2026-07-20','7 dias','var(--comunidade)','Comunidade Temática');
+addB('2026-07-20','7 dias','var(--comunidade)','Dia do Amigo');
 ['2026-10-12','2026-10-19'].forEach((m,i)=>addB(m,`Semana ${i+1}`,'var(--comunidade)','Mês das Crianças'));
 ['2026-11-30','2026-12-07','2026-12-14'].forEach((m,i)=>addB(m,`Semana ${i+1}`,'var(--projeto)','Verão que Lute'));
 // projetos SEM DATA — faixa tracejada ocupando o mês inteiro (cor da tag)
@@ -232,7 +236,7 @@ monthMondays(2026,9).forEach(m=>addB(m,'sem data','var(--projeto)','Crew+',true)
 monthMondays(2026,9).forEach(m=>addB(m,'sem data','var(--vitalicio)','Vitalício',true));    // outubro
 monthMondays(2026,10).forEach(m=>addB(m,'sem data','var(--projeto)','Black Friday',true));  // novembro
 
-function cellHTML(s,dayNum){
+function cellHTML(s,dayNum,col){
   const evs=eventsOnDay(s);
   let marks='', recovery=false;
   evs.forEach(e=>{
@@ -243,11 +247,13 @@ function cellHTML(s,dayNum){
   let blocks='';
   evs.forEach(e=>{
     const tent=e.kind==='tentative';
-    const tags=e.tags.map(tk=>`<span class="tagchip ${TAGS[tk].cls}${tent?' tent':''}">${TAGS[tk].label}</span>`).join('');
-    blocks+=`<div class="evt"><div class="evt-name">${e.name}${tent?' <em>· sem data</em>':''}</div><div class="evt-tags">${tags}</div></div>`;
+    const primary=e.tags[0];
+    const tags=e.tags.map(tk=>`<span class="evt-tag"><span class="d" style="background:${TAGS[tk].col}"></span>${TAGS[tk].label}</span>`).join('');
+    blocks+=`<div class="evt p-${primary}${tent?' tent':''}"><div class="evt-name">${e.name}${tent?' <em>· sem data</em>':''}</div><div class="evt-tags">${tags}</div></div>`;
   });
   if(recovery) blocks+=`<span class="badge">↺ Recovery</span>`;
-  return `<td class="${evs.length?'has':''}"><span class="dnum">${dayNum}</span>${marks}${blocks}</td>`;
+  const wknd=col>=5?' wknd':'';
+  return `<div class="cell${evs.length?' has':''}${wknd}"><span class="dnum">${dayNum}</span>${marks}${blocks}</div>`;
 }
 
 const INSIGHTS={
@@ -287,27 +293,28 @@ function buildMonth(year,month){
   const daysIn=new Date(Date.UTC(year,month+1,0)).getUTCDate();
   const rowMon0=addDays(firstISO,-startDow);
   const rows=Math.ceil((startDow+daysIn)/7);
-  let html=`<div class="month"><h3>${MES[month]} ${year}</h3>${LEGEND_MINI}<table class="cal"><thead><tr>`;
-  DOW.forEach(d=>html+=`<th>${d}</th>`); html+='</tr></thead><tbody>';
+  let html=`<div class="month"><h3>${MES[month]} ${year}</h3>${LEGEND_MINI}<div class="cal2"><div class="cal-head">`;
+  DOW.forEach(d=>html+=`<span>${d}</span>`); html+='</div>';
   for(let r=0;r<rows;r++){
     const rowMon=addDays(rowMon0,r*7);
+    html+='<div class="week"><div class="wk-days">';
+    for(let c=0;c<7;c++){
+      const dayNum=r*7+c-startDow+1;
+      if(dayNum<1||dayNum>daysIn){html+='<div class="cell empty"></div>';continue;}
+      const s=`${year}-${String(month+1).padStart(2,'0')}-${String(dayNum).padStart(2,'0')}`;
+      html+=cellHTML(s,dayNum,c);
+    }
+    html+='</div>';
     const bn=BANNERS[rowMon];
     if(bn){
       const bars=bn.map(b=>b.tent
         ?`<div class="wb tent" style="color:${b.col};border-color:${b.col}"><span>${b.sub}</span><small>· ${b.label}</small></div>`
         :`<div class="wb" style="background:${b.col}"><span>${b.sub}</span><small>· ${b.label}</small></div>`).join('');
-      html+=`<tr class="banner-row"><td colspan="7"><div class="wbar">${bars}</div></td></tr>`;
+      html+=`<div class="wk-strip">${bars}</div>`;
     }
-    html+='<tr>';
-    for(let c=0;c<7;c++){
-      const dayNum=r*7+c-startDow+1;
-      if(dayNum<1||dayNum>daysIn){html+='<td class="empty"></td>';continue;}
-      const s=`${year}-${String(month+1).padStart(2,'0')}-${String(dayNum).padStart(2,'0')}`;
-      html+=cellHTML(s,dayNum);
-    }
-    html+='</tr>';
+    html+='</div>';
   }
-  html+='</tbody></table>'+renderInsights(month)+'</div>';
+  html+='</div>'+renderInsights(month)+'</div>';
   return html;
 }
 let mm='';for(let mo=5;mo<=11;mo++)mm+=buildMonth(2026,mo);
@@ -340,7 +347,7 @@ const PROJ=[
   {name:'Ciclo 8',tag:'academia',when:'05/10 – 15/11 (6 sem)',def:true},
   {name:'Ciclo 9',tag:'academia',when:'16/11 – 27/12 (6 sem)',def:true},
   {name:'Ciclo 10',tag:'academia',when:'28/12 – 07/02/27 (6 sem)',def:true},
-  {name:'Comunidade Temática',tag:'comunidade',when:'20/07 – 26/07 (7 dias)',def:true},
+  {name:'Dia do Amigo - a definir',tag:'comunidade',when:'20/07 – 26/07 (7 dias)',def:true},
   {name:'Mês das Crianças (nome a definir)',tag:'comunidade',when:'12/10 – 25/10 (14 dias)',def:true},
   {name:'Mama Crew',tag:'projeto',when:'Agosto · mês todo · sem data',def:false},
   {name:'Xô Celulite',tag:'projeto',when:'Setembro · mês todo · sem data',def:false},
