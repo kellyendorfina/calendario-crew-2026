@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendário — Projetos & Comunidade 2026</title>
+<style>
+  :root{
+    --emcasa:#1f9d6b;--academia:#1c1c1e;--projeto:#e0801f;--comunidade:#7c3aed;--vitalicio:#db2777;
+    --ink:#1a1a2e;--muted:#6b7280;--line:#e6e7eb;--bg:#f6f7f9;--card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);
+    line-height:1.45;padding:32px 20px 64px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:4px 0 6px}
+  .sub{color:var(--muted);font-size:14px}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 4px}
+  .tag{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600}
+  .dot{width:12px;height:12px;border-radius:4px;flex:0 0 auto}
+  .legend-note{font-size:12px;color:var(--muted);margin-top:6px}
+  .topbar{margin-bottom:10px}
+  .cta-link{font-size:12.5px;color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line);padding-bottom:1px;transition:color .15s}
+  .cta-link:hover{color:var(--comunidade);border-bottom-color:var(--comunidade)}
+  header.centered{text-align:center}
+  header.centered h1{font-size:32px}
+  header.centered .legend{justify-content:center}
+  header.centered .legend-note{max-width:780px;margin-left:auto;margin-right:auto}
+  .divider-title{text-align:center;font-size:21px;font-weight:800;letter-spacing:.05em;color:var(--ink);
+    margin:40px 0 4px;display:flex;align-items:center;gap:16px}
+  .divider-title::before,.divider-title::after{content:'';flex:1;height:2px;background:var(--line)}
+  .define-note{text-align:center;font-size:15px;font-weight:800;letter-spacing:.08em;color:#92500f;background:#fff7ed;border:1px solid #f6d7ad;border-radius:10px;padding:12px;margin-bottom:16px}
+  .legend.mini{margin:0 0 14px;gap:7px}
+  .legend.mini .tag{padding:5px 11px;font-size:12px}
+  .legend.mini .dot{width:11px;height:11px}
+
+  section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 26px;
+    margin-top:22px;box-shadow:0 1px 2px rgba(20,20,40,.03)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .sec-head h2{font-size:18px;font-weight:800}
+  .sec-head .meta{font-size:13px;color:var(--muted)}
+
+  .months{display:flex;flex-direction:column;gap:30px}
+  .month h3{font-size:19px;font-weight:800;margin-bottom:12px;text-transform:capitalize;display:flex;align-items:center;gap:10px}
+  .month h3::after{content:'';flex:1;height:1px;background:var(--line)}
+  table.cal{width:100%;border-collapse:separate;border-spacing:7px;table-layout:fixed}
+  table.cal th{font-size:12px;color:var(--muted);font-weight:700;padding:4px 0 6px;text-transform:uppercase;letter-spacing:.06em}
+  table.cal td{vertical-align:top;min-height:110px;height:auto;border-radius:11px;background:#fbfbfd;
+    border:1px solid #eef0f3;padding:8px 9px;position:relative}
+  td.empty{background:transparent;border:none}
+  td.has{background:#fff}
+  .dnum{font-size:16px;font-weight:800;color:var(--ink)}
+
+  /* insights de conteúdo por mês */
+  .insights{margin-top:18px;border-top:2px dashed var(--line);padding-top:15px}
+  .insights h4{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:11px;display:flex;align-items:center;gap:7px}
+  .ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+  .ins{display:flex;gap:11px;border:1px solid var(--line);border-left:4px solid var(--comunidade);border-radius:11px;padding:11px 13px;background:#fcfcfe}
+  .ins .d{flex:0 0 auto;min-width:50px;text-align:center;font-weight:800;font-size:11.5px;color:#fff;background:var(--comunidade);border-radius:8px;padding:6px 5px;display:flex;align-items:center;justify-content:center;line-height:1.15}
+  .ins .it{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.25}
+  .ins .ix{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+  /* linha "Semana N" atravessando a semana */
+  tr.banner-row > td{padding:0;background:transparent;border:none}
+  .wbar{display:flex;flex-direction:column;gap:4px;padding:3px 0 0}
+  .wb{display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:800;color:#fff;
+    padding:5px 13px;border-radius:8px;letter-spacing:.01em}
+  .wb::before{content:'';width:16px;height:2px;background:rgba(255,255,255,.85);border-radius:2px}
+  .wb small{font-weight:700;opacity:.92}
+  .wb.tent{background:transparent;border:1.7px dashed currentColor}
+  .wb.tent::before{background:currentColor;opacity:.6}
+
+  /* evento dentro do dia: nome em cima, tags lado a lado */
+  .evt{margin-top:7px}
+  .evt-name{font-size:11.5px;font-weight:800;color:var(--ink);line-height:1.2}
+  .evt-name em{font-style:normal;font-weight:700;color:var(--projeto);font-size:9.5px}
+  .evt-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+  .tagchip{font-size:8.5px;font-weight:800;padding:2px 6px;border-radius:6px;color:#fff;line-height:1.3;white-space:nowrap}
+  .tagchip.t-emcasa{background:var(--emcasa)}
+  .tagchip.t-academia{background:var(--academia)}
+  .tagchip.t-projeto{background:var(--projeto)}
+  .tagchip.t-comunidade{background:var(--comunidade)}
+  .tagchip.t-vitalicio{background:var(--vitalicio)}
+  .tagchip.tent{background:transparent!important}
+  .tagchip.t-emcasa.tent{color:var(--emcasa);border:1.5px dashed var(--emcasa)}
+  .tagchip.t-academia.tent{color:var(--academia);border:1.5px dashed var(--academia)}
+  .tagchip.t-projeto.tent{color:var(--projeto);border:1.5px dashed var(--projeto)}
+  .tagchip.t-comunidade.tent{color:var(--comunidade);border:1.5px dashed var(--comunidade)}
+  .tagchip.t-vitalicio.tent{color:var(--vitalicio);border:1.5px dashed var(--vitalicio)}
+  .badge{display:inline-block;margin-top:6px;font-size:11px;font-weight:800;color:var(--emcasa)}
+  .b-start{position:absolute;top:8px;right:9px;font-size:9px;font-weight:800;color:var(--projeto);letter-spacing:.03em}
+  .b-end{position:absolute;top:8px;right:9px;font-size:9px;font-weight:800;letter-spacing:.03em}
+
+  .weekrow{display:grid;grid-template-columns:80px 1fr;gap:14px;border:1px solid var(--line);border-radius:13px;
+    padding:12px 14px;margin-bottom:12px;background:#fcfcfe}
+  .weekrow.copa{border-left:5px solid var(--comunidade)}
+  .weekrow.ciclo{border-left:5px solid var(--academia)}
+  .wk-label{display:flex;flex-direction:column;justify-content:center}
+  .wk-num{font-size:13px;font-weight:800}.wk-range{font-size:11px;color:var(--muted);margin-top:2px}
+  .days-line{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:9px}
+  .dchip{border:1px solid var(--line);border-radius:8px;padding:5px 4px;text-align:center;background:#fff}
+  .dchip .dow{font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase}
+  .dchip .dd{font-size:13px;font-weight:800;margin-top:1px}
+  .dchip.mon{border-color:var(--projeto);box-shadow:inset 0 -3px 0 rgba(224,128,31,.35)}
+  .dchip.sun{border-color:var(--emcasa);box-shadow:inset 0 -3px 0 rgba(31,157,107,.35)}
+  .dchip.sun .rec{display:block;font-size:8.5px;font-weight:800;color:var(--emcasa);margin-top:2px}
+  .obs{display:flex;flex-wrap:wrap;gap:7px}
+  .obs span{font-size:11px;font-weight:600;background:#f1f0fb;color:#4b3b8f;border-radius:7px;padding:4px 9px}
+  .obs span.cardio{background:#fdf0e3;color:#9a5511}.obs span.gabi{background:#e6f6ef;color:#0f6b46}
+  .flow{font-size:11px;color:var(--muted);margin-top:7px}
+  .note{font-size:12px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .overlap-tip{font-size:12px;background:#fff7ed;border:1px solid #f6d7ad;color:#92500f;border-radius:9px;padding:9px 12px;margin-bottom:14px}
+  .plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+  .pcard{border:1px solid var(--line);border-radius:12px;padding:13px 15px 13px 19px;position:relative;background:#fcfcfe}
+  .pcard .pt{font-size:14px;font-weight:800}.pcard .pg{font-size:11px;font-weight:700;margin-top:3px}
+  .pcard .pd{font-size:12px;color:var(--muted);margin-top:6px}
+  .pcard .stat{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:6px}
+  .stat.sem{background:#fdf0e3;color:#9a5511}.stat.def{background:#e6f6ef;color:#0f6b46}
+  .pbar{position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:12px 0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><a class="cta-link" href="https://app.notion.com/p/Calendario_Datas_Comemorativas_CREW_2026-379a009ec0d380ceb4affbdd4e8c7f3e" target="_blank" rel="noopener">↗ Calendário de datas comemorativas</a></div>
+  <header class="centered">
+    <div class="kicker">Endorfina · Projetos & Comunidade</div>
+    <h1>CALENDÁRIO JUNHO A DEZEMBRO/2026</h1>
+    <div class="sub">Semana de <strong>segunda a domingo</strong>. Cada dia traz o <strong>nome do projeto/aula</strong> e suas tags <strong>lado a lado</strong>.</div>
+    <div class="legend">
+      <span class="tag"><span class="dot" style="background:var(--emcasa)"></span>#EmCasa</span>
+      <span class="tag"><span class="dot" style="background:var(--academia)"></span>#Academia</span>
+      <span class="tag"><span class="dot" style="background:var(--projeto)"></span>#Projeto</span>
+      <span class="tag"><span class="dot" style="background:var(--comunidade)"></span>#Comunidade_Temático</span>
+      <span class="tag"><span class="dot" style="background:var(--vitalicio)"></span>#Vitalicio</span>
+    </div>
+    <div class="legend-note">As faixas atravessando as semanas mostram <strong>Semana 1, 2, 3…</strong> e os ciclos. Faixa <strong>tracejada</strong> = projeto <strong>sem data definida</strong>, ocupando o mês inteiro na cor da tag.</div>
+  </header>
+
+  <section>
+    <div class="sec-head"><h2>Visão mensal — dia a dia</h2><div class="meta">Linha "Semana N" + tags lado a lado</div></div>
+    <div class="months" id="months"></div>
+  </section>
+
+  <div class="divider-title">DETALHAMENTO DOS PRODUTOS</div>
+
+  <section>
+    <div class="sec-head"><h2>🏆 Copa Crew — semana a semana</h2><div class="meta">#Comunidade_Temático + #EmCasa · 5 semanas · 15/06 → 19/07</div></div>
+    <div id="copaWeeks"></div>
+    <div class="note">Cada semana: <strong>Treinos da Gabi</strong> · <strong>2 cardios</strong> (Muay Thai + Step Funcional) · obs <strong>Pilar</strong> · <strong>Recovery</strong> no domingo.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>💪 Ciclos da Academia — 6 a 10</h2><div class="meta">#Academia · blocos de 6 semanas (segunda → domingo)</div></div>
+    <div class="overlap-tip">⚠️ Cada ciclo dura 6 semanas e termina no domingo anterior ao início do próximo. A "Entrega das fichas" e os "Novos Treinos em Casa" aparecem como marcações dentro dos meses.</div>
+    <div id="cicloWeeks"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>📌 Projetos & eventos — status</h2><div class="meta">Datas definidas e pendentes</div></div>
+    <div class="define-note">A DEFINIR COM A GABI</div>
+    <div class="plist" id="plist"></div>
+  </section>
+</div>
+
+<script>
+const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const DOW=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const iso=d=>d.toISOString().slice(0,10);
+const mk=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(Date.UTC(y,m-1,d));};
+const fmt=s=>{const d=mk(s);return String(d.getUTCDate()).padStart(2,'0')+'/'+String(d.getUTCMonth()+1).padStart(2,'0');};
+const addDays=(s,n)=>{const d=mk(s);d.setUTCDate(d.getUTCDate()+n);return iso(d);};
+const weekDays=s=>{let a=[];for(let i=0;i<7;i++)a.push(addDays(s,i));return a;};
+const isSunday=s=>mk(s).getUTCDay()===0;
+
+const TAGS={
+  comunidade:{cls:'t-comunidade',label:'#Comunidade_Temático',col:'var(--comunidade)'},
+  emcasa:{cls:'t-emcasa',label:'#EmCasa',col:'var(--emcasa)'},
+  academia:{cls:'t-academia',label:'#Academia',col:'var(--academia)'},
+  projeto:{cls:'t-projeto',label:'#Projeto',col:'var(--projeto)'},
+  vitalicio:{cls:'t-vitalicio',label:'#Vitalicio',col:'var(--vitalicio)'},
+};
+
+const EVENTS=[
+  {name:'Copa Crew', tags:['comunidade','emcasa'], kind:'range', start:'2026-06-15', end:'2026-07-19', recovery:true, startMark:true, endMark:'var(--comunidade)'},
+  {name:'Início Ciclo 6', tags:['academia'], kind:'point', start:'2026-07-13', end:'2026-07-13', startMark:true},
+  {name:'Início Ciclo 7', tags:['academia'], kind:'point', start:'2026-08-24', end:'2026-08-24', startMark:true},
+  {name:'Início Ciclo 8', tags:['academia'], kind:'point', start:'2026-10-05', end:'2026-10-05', startMark:true},
+  {name:'Início Ciclo 9', tags:['academia'], kind:'point', start:'2026-11-16', end:'2026-11-16', startMark:true},
+  {name:'Início Ciclo 10', tags:['academia'], kind:'point', start:'2026-12-28', end:'2026-12-28', startMark:true},
+  {name:'Comunidade Temática', tags:['comunidade'], kind:'range', start:'2026-07-20', end:'2026-07-26'},
+  {name:'Mês das Crianças (a definir)', tags:['comunidade'], kind:'range', start:'2026-10-12', end:'2026-10-25'},
+  {name:'Verão que Lute', tags:['projeto'], kind:'point', start:'2026-11-09', end:'2026-11-09'},
+  {name:'Verão que Lute', tags:['projeto'], kind:'range', start:'2026-11-29', end:'2026-12-19'},
+  // (Mama Crew, Xô Celulite, Crew+, Vitalício e Black Friday agora são faixas mensais — ver BANNERS)
+  // #Vitalicio
+  {name:'Guia de Suplementação', tags:['vitalicio'], kind:'point', start:'2026-07-20', end:'2026-07-20'},
+  {name:'Live 1 · Gabi', tags:['vitalicio'], kind:'tentative', start:'2026-07-13'},
+  {name:'Live 2 · Gabi', tags:['vitalicio'], kind:'tentative', start:'2026-09-14'},
+  {name:'Evento Presencial NBT', tags:['vitalicio'], kind:'tentative', start:'2026-11-09'},
+  // Entrega das Fichas (#Academia)
+  {name:'Entrega Fichas · Ciclo 7', tags:['academia'], kind:'point', start:'2026-08-10', end:'2026-08-10'},
+  {name:'Entrega Fichas · Ciclo 8', tags:['academia'], kind:'point', start:'2026-09-21', end:'2026-09-21'},
+  {name:'Entrega Fichas · Ciclo 9', tags:['academia'], kind:'point', start:'2026-11-02', end:'2026-11-02'},
+  {name:'Entrega Fichas · Ciclo 10', tags:['academia'], kind:'point', start:'2026-12-14', end:'2026-12-14'},
+  // Novos Treinos em Casa (#EmCasa)
+  {name:'Novos Treinos em Casa · 2 sem', tags:['emcasa'], kind:'point', start:'2026-07-19', end:'2026-07-19'},
+  {name:'Novos Treinos em Casa · 5 sem', tags:['emcasa'], kind:'point', start:'2026-08-02', end:'2026-08-02'},
+  {name:'Novos Treinos em Casa · aguardando projeto', tags:['emcasa'], kind:'point', start:'2026-09-06', end:'2026-09-06'},
+  {name:'Novos Treinos em Casa · 4 sem', tags:['emcasa'], kind:'point', start:'2026-10-04', end:'2026-10-04'},
+  {name:'Novos Treinos em Casa · 2 sem', tags:['emcasa'], kind:'point', start:'2026-11-01', end:'2026-11-01'},
+  {name:'Novos Treinos em Casa · 2 sem', tags:['emcasa'], kind:'point', start:'2026-12-20', end:'2026-12-20'},
+  // Cardio Ceia (#EmCasa)
+  {name:'Cardio Ceia', tags:['emcasa'], kind:'point', start:'2026-12-25', end:'2026-12-25'},
+];
+const eventsOnDay=s=>EVENTS.filter(e=>e.kind==='range'?(s>=e.start&&s<=e.end):s===e.start);
+
+// faixas semanais (linha "Semana N") por segunda-feira
+const BANNERS={};
+const addB=(mon,label,col,sub,tent)=>{(BANNERS[mon]=BANNERS[mon]||[]).push({label,col,sub,tent});};
+function monthMondays(y,m){let r=[];const dim=new Date(Date.UTC(y,m+1,0)).getUTCDate();for(let d=1;d<=dim;d++){const s=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;if(mk(s).getUTCDay()===1)r.push(s);}return r;}
+['2026-06-15','2026-06-22','2026-06-29','2026-07-06','2026-07-13'].forEach((m,i)=>addB(m,`Semana ${i+1}`,'var(--comunidade)','Copa Crew'));
+[[6,'2026-07-13'],[7,'2026-08-24'],[8,'2026-10-05'],[9,'2026-11-16'],[10,'2026-12-28']].forEach(([n,st])=>{for(let w=0;w<6;w++)addB(addDays(st,w*7),`Sem ${w+1}`,'var(--academia)',`Ciclo ${n}`);});
+addB('2026-07-20','7 dias','var(--comunidade)','Comunidade Temática');
+['2026-10-12','2026-10-19'].forEach((m,i)=>addB(m,`Semana ${i+1}`,'var(--comunidade)','Mês das Crianças'));
+['2026-11-30','2026-12-07','2026-12-14'].forEach((m,i)=>addB(m,`Semana ${i+1}`,'var(--projeto)','Verão que Lute'));
+// projetos SEM DATA — faixa tracejada ocupando o mês inteiro (cor da tag)
+monthMondays(2026,7).forEach(m=>addB(m,'sem data','var(--projeto)','Mama Crew',true));    // agosto
+monthMondays(2026,8).forEach(m=>addB(m,'sem data','var(--projeto)','Xô Celulite',true));   // setembro
+monthMondays(2026,9).forEach(m=>addB(m,'sem data','var(--projeto)','Crew+',true));          // outubro
+monthMondays(2026,9).forEach(m=>addB(m,'sem data','var(--vitalicio)','Vitalício',true));    // outubro
+monthMondays(2026,10).forEach(m=>addB(m,'sem data','var(--projeto)','Black Friday',true));  // novembro
+
+function cellHTML(s,dayNum){
+  const evs=eventsOnDay(s);
+  let marks='', recovery=false;
+  evs.forEach(e=>{
+    if(e.startMark&&s===e.start) marks+=`<span class="b-start">INÍCIO</span>`;
+    if(e.endMark&&s===e.end) marks+=`<span class="b-end" style="color:${e.endMark}">FIM</span>`;
+    if(e.recovery&&isSunday(s)) recovery=true;
+  });
+  let blocks='';
+  evs.forEach(e=>{
+    const tent=e.kind==='tentative';
+    const tags=e.tags.map(tk=>`<span class="tagchip ${TAGS[tk].cls}${tent?' tent':''}">${TAGS[tk].label}</span>`).join('');
+    blocks+=`<div class="evt"><div class="evt-name">${e.name}${tent?' <em>· sem data</em>':''}</div><div class="evt-tags">${tags}</div></div>`;
+  });
+  if(recovery) blocks+=`<span class="badge">↺ Recovery</span>`;
+  return `<td class="${evs.length?'has':''}"><span class="dnum">${dayNum}</span>${marks}${blocks}</td>`;
+}
+
+const INSIGHTS={
+  6:[
+    {d:'20/07', t:'Dia do Amigo', x:'Ação "traga um amigo", desafio em dupla e conteúdo de comunidade. Indicar missão de 7 dias.'},
+    {d:'fim de jul', t:'Pós-Copa & festas juninas/julinas', x:'Tema nutricional de retomada: equilíbrio após as comemorações, receitas leves e volta à rotina.'},
+  ],
+  7:[
+    {d:'05/08', t:'Dia Nacional da Saúde', x:'Live com Danilo.'},
+    {d:'31/08', t:'Dia do Nutricionista', x:'Live com Danilo e equipe.'},
+  ],
+  8:[
+    {d:'01/09', t:'Dia do Profissional de Educação Física', x:'Tirar a dependência da Gabi: aulão com outros profissionais do studio — 1 semana de aulas ao vivo.'},
+    {d:'10/09', t:'Setembro Amarelo · Prevenção ao Suicídio', x:'Nova modalidade? Cuidar da saúde mental — possível parceria com a Zenklub.'},
+    {d:'22/09', t:'Início da Primavera', x:'Habit track: foco em novas metas e estilo de vida — trazer profissional de neurociência / mentor de produtividade.'},
+    {d:'29/09', t:'Dia Mundial do Coração', x:'Foco em cardio a semana toda: muay thai, boxe, step e ciclismo.'},
+  ],
+  9:[
+    {d:'mês', t:'Outubro Rosa', x:'Mês da consciência e do autocuidado: pilares com foco em saúde.'},
+    {d:'10/10', t:'Dia Mundial da Saúde Mental', x:'Linkado com o Setembro Amarelo.'},
+    {d:'12/10', t:'Dia das Crianças', x:'Foco em cuidadores — projeto temático: "seja mãe, tia, prima, vizinha, o que for, mesmo sozinha…".'},
+    {d:'16/10', t:'Dia Mundial da Alimentação', x:'Guia nutricional.'},
+  ],
+};
+function renderInsights(month){
+  const arr=INSIGHTS[month]; if(!arr)return '';
+  return `<div class="insights"><h4>💡 Insights de conteúdo — ${MES[month]}</h4><div class="ins-grid">`+
+    arr.map(i=>`<div class="ins"><div class="d">${i.d}</div><div><div class="it">${i.t}</div><div class="ix">${i.x}</div></div></div>`).join('')+
+    `</div></div>`;
+}
+const LEGEND_MINI=`<div class="legend mini">`+
+  [['emcasa','#EmCasa'],['academia','#Academia'],['projeto','#Projeto'],['comunidade','#Comunidade_Temático'],['vitalicio','#Vitalicio']]
+  .map(([k,l])=>`<span class="tag"><span class="dot" style="background:var(--${k})"></span>${l}</span>`).join('')+`</div>`;
+function buildMonth(year,month){
+  const firstISO=`${year}-${String(month+1).padStart(2,'0')}-01`;
+  const startDow=(mk(firstISO).getUTCDay()+6)%7;
+  const daysIn=new Date(Date.UTC(year,month+1,0)).getUTCDate();
+  const rowMon0=addDays(firstISO,-startDow);
+  const rows=Math.ceil((startDow+daysIn)/7);
+  let html=`<div class="month"><h3>${MES[month]} ${year}</h3>${LEGEND_MINI}<table class="cal"><thead><tr>`;
+  DOW.forEach(d=>html+=`<th>${d}</th>`); html+='</tr></thead><tbody>';
+  for(let r=0;r<rows;r++){
+    const rowMon=addDays(rowMon0,r*7);
+    const bn=BANNERS[rowMon];
+    if(bn){
+      const bars=bn.map(b=>b.tent
+        ?`<div class="wb tent" style="color:${b.col};border-color:${b.col}"><span>${b.sub}</span><small>· ${b.label}</small></div>`
+        :`<div class="wb" style="background:${b.col}"><span>${b.sub}</span><small>· ${b.label}</small></div>`).join('');
+      html+=`<tr class="banner-row"><td colspan="7"><div class="wbar">${bars}</div></td></tr>`;
+    }
+    html+='<tr>';
+    for(let c=0;c<7;c++){
+      const dayNum=r*7+c-startDow+1;
+      if(dayNum<1||dayNum>daysIn){html+='<td class="empty"></td>';continue;}
+      const s=`${year}-${String(month+1).padStart(2,'0')}-${String(dayNum).padStart(2,'0')}`;
+      html+=cellHTML(s,dayNum);
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table>'+renderInsights(month)+'</div>';
+  return html;
+}
+let mm='';for(let mo=5;mo<=11;mo++)mm+=buildMonth(2026,mo);
+document.getElementById('months').innerHTML=mm;
+
+// timelines
+const copa=[{n:1,start:'2026-06-15',end:'2026-06-21'},{n:2,start:'2026-06-22',end:'2026-06-28'},{n:3,start:'2026-06-29',end:'2026-07-05'},{n:4,start:'2026-07-06',end:'2026-07-12'},{n:5,start:'2026-07-13',end:'2026-07-19'}];
+const CYCLES=[{n:6,s:'2026-07-13',e:'2026-08-23'},{n:7,s:'2026-08-24',e:'2026-10-04'},{n:8,s:'2026-10-05',e:'2026-11-15'},{n:9,s:'2026-11-16',e:'2026-12-27'},{n:10,s:'2026-12-28',e:'2027-02-07'}];
+function weekRow(w,type,tail){
+  let chips='';
+  weekDays(w.start).forEach((d,i)=>{
+    const cls=i===0?'mon':(i===6?'sun':'');
+    const rec=(type==='copa'&&i===6)?'<span class="rec">Recovery</span>':'';
+    chips+=`<div class="dchip ${cls}"><div class="dow">${DOW[i]}</div><div class="dd">${fmt(d)}</div>${rec}</div>`;
+  });
+  const obs=type==='copa'
+    ?`<div class="obs"><span class="gabi">Treinos da Gabi</span><span class="cardio">Cardio 1 · Muay Thai</span><span class="cardio">Cardio 2 · Step Funcional</span><span>Obs: Pilar</span><span>Recovery (dom)</span></div>`
+    :`<div class="obs"><span style="background:#e6e6e8;color:#1c1c1e">#Academia</span>${tail||''}</div>`;
+  return `<div class="weekrow ${type}"><div class="wk-label"><div class="wk-num">Semana ${w.n}</div><div class="wk-range">${fmt(w.start)} – ${fmt(w.end)}</div></div>
+    <div class="wk-body"><div class="days-line">${chips}</div>${obs}<div class="flow">▸ começa <strong>segunda ${fmt(w.start)}</strong> e termina <strong>domingo ${fmt(w.end)}</strong></div></div></div>`;
+}
+document.getElementById('copaWeeks').innerHTML=copa.map(w=>weekRow(w,'copa')).join('');
+document.getElementById('cicloWeeks').innerHTML=CYCLES.map(c=>`<div class="weekrow ciclo"><div class="wk-label"><div class="wk-num">Ciclo ${c.n}</div><div class="wk-range">6 semanas</div></div><div class="wk-body"><div class="obs"><span style="background:#e6e6e8;color:#1c1c1e">Início: segunda ${fmt(c.s)}</span><span style="background:#e6e6e8;color:#1c1c1e">Fim: domingo ${fmt(c.e)}${c.n===10?'/27':''}</span></div><div class="flow">▸ ${c.n===10?'segue para fevereiro/2027':'encerra no domingo anterior ao início do Ciclo '+(c.n+1)}</div></div></div>`).join('');
+
+// lista projetos
+const PROJ=[
+  {name:'Copa Crew',tag:'comunidade',extra:'emcasa',when:'15/06 – 19/07',def:true},
+  {name:'Ciclo 6',tag:'academia',when:'13/07 – 23/08 (6 sem)',def:true},
+  {name:'Ciclo 7',tag:'academia',when:'24/08 – 04/10 (6 sem)',def:true},
+  {name:'Ciclo 8',tag:'academia',when:'05/10 – 15/11 (6 sem)',def:true},
+  {name:'Ciclo 9',tag:'academia',when:'16/11 – 27/12 (6 sem)',def:true},
+  {name:'Ciclo 10',tag:'academia',when:'28/12 – 07/02/27 (6 sem)',def:true},
+  {name:'Comunidade Temática',tag:'comunidade',when:'20/07 – 26/07 (7 dias)',def:true},
+  {name:'Mês das Crianças (nome a definir)',tag:'comunidade',when:'12/10 – 25/10 (14 dias)',def:true},
+  {name:'Mama Crew',tag:'projeto',when:'Agosto · mês todo · sem data',def:false},
+  {name:'Xô Celulite',tag:'projeto',when:'Setembro · mês todo · sem data',def:false},
+  {name:'Crew+',tag:'projeto',when:'Outubro · mês todo · sem data',def:false},
+  {name:'Vitalício',tag:'vitalicio',when:'Outubro · mês todo · sem data',def:false},
+  {name:'Black Friday',tag:'projeto',when:'Novembro · mês todo · sem data',def:false},
+  {name:'Verão que Lute',tag:'projeto',when:'09/11',def:true},
+  {name:'Verão que Lute',tag:'projeto',when:'29/11 – 19/12 (21 dias)',def:true},
+  {name:'Guia de Suplementação',tag:'vitalicio',when:'20/07',def:true},
+  {name:'Live 1 · Gabi',tag:'vitalicio',when:'Julho · 2ª semana (ref. 13/07)',def:false},
+  {name:'Live 2 · Gabi',tag:'vitalicio',when:'Setembro · 2ª semana (ref. 14/09)',def:false},
+  {name:'Evento Presencial NBT',tag:'vitalicio',when:'Novembro · data a definir (ref. 09/11)',def:false},
+];
+document.getElementById('plist').innerHTML=PROJ.map(p=>{
+  const g=TAGS[p.tag].label+(p.extra?` + ${TAGS[p.extra].label}`:'');
+  return `<div class="pcard"><div class="pbar" style="background:${TAGS[p.tag].col}"></div><div class="pt">${p.name}</div>
+    <div class="pg" style="color:${TAGS[p.tag].col}">${g}</div><div class="pd">${p.when}</div>
+    <span class="stat ${p.def?'def':'sem'}">${p.def?'data definida':'sem data'}</span></div>`;
+}).join('');
+</script>
+</body>
+</html>
